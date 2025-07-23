@@ -100,6 +100,17 @@ a@fu:~/threefive$ cat sidecar.txt
 72820.9484,/DBDAAAAAyiYAP/wFAUAAAABf+//hqqjQv4ApMbEmZkBAQAeAhxDVUVJAAAAAH/AAACky4ABCDEwMTAwMDAwNAAAN7GZ7w==
 72951.7791,/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU=
 ```
+* if your SCTE-35 is xml or json you can convert it and write it to a sidecar
+	* _in this example,  123.45678 is your insert_pts and json.json is a file containing your SCTE-35 cue in json._
+```smalltalk
+printf "123.45678 %s \n" `threefive < ~/json.json base64 2>&1`  >> sidecar.txt
+```
+* the above will append this to the sidecar file.
+```js
+123.45678 /DA5AAAAAyiYAP/wCgUAAAABfx+ZmQH/AB4CHENVRUkAAAAAf4AMDURPT01TdXBlckRvb201AACPN660 
+```
+
+
 ## adbreak3
 * adbreak3 is a command line tool for generating SCTE-35 for sidecar files
 ```js
