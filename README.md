@@ -88,7 +88,7 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 
 # Generating sidecar files.
 
-* You can write a sidecar file by hand or use one of these tools.
+* You can write a sidecar file by hand or you can use one of these tools.
 
 ## threefive 
 * If you want to extract the SCTE-35 from an existing MPEGTS stream into a sidecar file
@@ -110,6 +110,8 @@ printf "123.45678 %s \n" `threefive < ~/json.json base64 2>&1`  >> sidecar.txt
 ```js
 123.45678 /DA5AAAAAyiYAP/wCgUAAAABfx+ZmQH/AB4CHENVRUkAAAAAf4AMDURPT01TdXBlckRvb201AACPN660 
 ```
+* How do you that shell stuff on __Windows?__
+   * __I have no idea__. If anyone wants to tell me, I will add it. 
 
 
 ## adbreak3
