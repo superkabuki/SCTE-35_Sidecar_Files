@@ -1,4 +1,4 @@
-# SCTE-35 Sidecar_Files
+# SCTE-35 Sidecar Files
 <img width="1054" height="587" alt="image" src="https://github.com/user-attachments/assets/b5b0d7cb-13bb-4bb4-a66a-633b89906c61" />
 
 # SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams or HLS manifests.
@@ -9,7 +9,7 @@ __Right now they are partially documented across several repos, so I decided to 
 
 # Why a sidecar file and not SCTE-104?
 ### Have you read the SCTE-104 specification?
-__I have__, and shortly after reading the spec, I came up with SCTE-35 sidecar files.
+I have. Shortly after reading the spec, I came up with SCTE-35 sidecar files.
 
 ___
 
@@ -17,6 +17,7 @@ ___
 
 ### `Sidecar files are made of lines.`
 ### `Lines have an insert_pts, and a cue`.
+
 
 ```smalltalk
 a@fu:~/threefive$ cat ~/sidecar.txt 
@@ -29,59 +30,51 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 58300.0,/DAlAAAAAAAAAP/wFAUAAAABf+//OL7dwP4Bm/zAAAEAAAAAvdWUYg
 ```
 
-* __Sidecar Files__
-    * ascii text files    
-    * Sidecar files are read on startup.
-    * __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
-    * To handle live updates, sidecar files are __checked at every iframe__.
-    * Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
-
+* __sidecar files__
+   * ascii text files
+   * Sidecar files are read on startup.
+   * __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
+   * To handle live updates, sidecar files are __checked at every iframe__.
+   * Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
+---
 ### `Sidecar Files have lines`
+
 ```js
-
-# insert_pts , cue
     58100.0 , /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
-
 ```
 * __lines__
-    *  format  is one  __insert_pts__  , __cue__ pair per line.
-    *  __insert_pts__ and __cue__ are separated by a comma.
-    *  surrounding white space doesn't matter,
-    *  lines end on a new line character '\n'.
 
+   *  format  is one  __insert_pts__  , __cue__ pair per line.
+   *  __insert_pts__ and __cue__ are separated by a comma.
+   *  surrounding white space doesn't matter,
+   *  lines end on a new line character '\n'.
+---
 
-
-### `lines have insert_pts`
+### `Lines have an insert_pts and a cue`.
 
 ```js
-
 95443.717678
-
 ```
 * __insert_pts__
-    * __insert_pts__ is MPEGTS __pts in seconds__. 
-    * a float accurate to 6 places
-    * range  __0 - 95443.717678__.
-    * Setting to 0 inserts the cue at the __next iframe__.
 
-### `lines also have a cue`
+   * __insert_pts__ is MPEGTS __pts in seconds__.
+   * a float accurate to 6 places
+   * range  __0 - 95443.717678__.
+   * Setting to 0 inserts the cue at the __next iframe__.
+---
 
 ```js
-
   /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
-
 ```
 * __cue__
-    * standard SCTE-35. 
-    * formats
-        * base64
-        * bytes
-        * hex
-        * integer
 
-
-
-___
+   * standard SCTE-35. 
+   * formats
+     * base64
+     * bytes
+     * hex
+     * integer
+---
 
 
 
