@@ -1,3 +1,5 @@
+[Sidecar Specification](#pecification) | [Generate Sidecar Files](https://github.com/superkabuki/SCTE-35_Sidecar_Files/blob/main/README.md#generating-sidecar-files) 
+
 # SCTE-35 Sidecar Files
 <img width="1054" height="587" alt="image" src="https://github.com/user-attachments/assets/b5b0d7cb-13bb-4bb4-a66a-633b89906c61" />
 
@@ -13,7 +15,7 @@ I have. Shortly after reading the spec, I came up with SCTE-35 sidecar files.
 
 ___
 
-# Details
+# Specification
 
 ### `Sidecar files are made of lines.`
 ### `Lines have an insert_pts, and a cue`.
