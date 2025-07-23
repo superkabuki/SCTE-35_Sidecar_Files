@@ -1,4 +1,4 @@
-# SCTE-35_Sidecar_Files
+# SCTE-35 Sidecar_Files
 <img width="1054" height="587" alt="image" src="https://github.com/user-attachments/assets/b5b0d7cb-13bb-4bb4-a66a-633b89906c61" />
 
 # SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams or HLS manifests.
@@ -11,13 +11,12 @@ __Right now they are partially documented across several repos, so I decided to 
 ### Have you read the SCTE-104 specification?
 __I have__, and shortly after reading the spec, I came up with SCTE-35 sidecar files.
 
+___
 
-# Format
+# Details
 
-
-A __sidecar file__ has a simple format __insert_pts__  , __cue__
-
-Example:
+### `Sidecar files are made of lines.`
+### `Lines have an insert_pts, and a cue`.
 
 ```smalltalk
 a@fu:~/threefive$ cat ~/sidecar.txt 
@@ -27,31 +26,68 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 58200.0,/DAgAAAAAAAAAP/wDwUAAAACf0//ODWJgAACAAAAAAzmjy0=
 58100.0,/DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
 58400.0,/DAgAAAAAAAAAP/wDwUAAAACf0//OUgyAAACAAAAAOK4vJc=
-58300.0,/DAlAAAAAAAAAP/wFAUAAAABf+//OL7dwP4Bm/zAAAEAAAAAvdWUYg==
-58600.0,/DAgAAAAAAAAAP/wDwUAAAACf0//OlragAACAAAAAP6BgyQ=
-58700.0,/DAlAAAAAAAAAP/wFAUAAAABf+//OuQuwP4Bm/zAAAEAAAAA8gWewg==
-59000.0,/DAgAAAAAAAAAP/wDwUAAAACf0//PIArgAACAAAAAEuzXPE=
+58300.0,/DAlAAAAAAAAAP/wFAUAAAABf+//OL7dwP4Bm/zAAAEAAAAAvdWUYg
 ```
 
-* I use base64 most of the time, but the format can be base64, bytes, hex, or int.
-* I usually name the file __sidecar.txt__, but it can be named anything.
+* __Sidecar Files__
+    * ascii text files    
+    * Sidecar files are read on startup.
+    * __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
+    * To handle live updates, sidecar files are __checked at every iframe__.
+    * Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
+
+### `Sidecar Files have lines`
+```js
+
+# insert_pts , cue
+    58100.0 , /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
+
+```
+* __lines__
+    *  format  is one  __insert_pts__  , __cue__ pair per line.
+    *  __insert_pts__ and __cue__ are separated by a comma.
+    *  surrounding white space doesn't matter,
+    *  lines end on a new line character '\n'.
+
+
+
+### `lines have insert_pts`
+
+```js
+
+95443.717678
+
+```
+* __insert_pts__
+    * __insert_pts__ is MPEGTS __pts in seconds__. 
+    * a float accurate to 6 places
+    * range  __0 - 95443.717678__.
+    * Setting to 0 inserts the cue at the __next iframe__.
+
+### `lines also have a cue`
+
+```js
+
+  /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
+
+```
+* __cue__
+    * standard SCTE-35. 
+    * formats
+        * base64
+        * bytes
+        * hex
+        * integer
+
+
+
+___
+
+
+
+
 
 # Why isn't the insert_pts the same as the SCTE-35 pts_time / spice point?
 
 * __With HLS, it is the same__, but with MPEGTS, SCTE-35 is usually inserted 4-10 seconds before the SCTE-35 splice point.
-
-# How do they work? 
-* Sidecar files are ascii text files
-* the format  is one  __insert_pts__  , __cue__ pair per line.
-*  __insert_pts__ and __cue__ are separated by a comma, surrounding white space doesn't matter,
-*  Lines end on a new line character '\n'.
-* __insert_pts__ is MPEGTS __pts in seconds__. A float accurate to 6 places, in the range  __0-95443.717678__.
-* __cue__ is standard SCTE-35 in  base64, bytes,hex,or integer.
-* Sidecar files are read on startup.
-* __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
-* To handle live updates, sidecar files are __checked at every iframe__.
-* Setting __insert_pts to 0__ inserts the SCTE-35 cue at the __next iframe__.
-* Lines with a insert_pts that has passed are ignored. 
-* Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
-
 
