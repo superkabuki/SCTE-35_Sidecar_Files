@@ -87,8 +87,9 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 
 
 # Generating sidecar files.
-* You write a sidecar file by hand or use one of these tools.
+* You can write a sidecar file by hand or use one of these tools.
 
+## threefive 
 * If you want to extract the SCTE-35 from an existing MPEGTS stream into a sidecar file
 ```js
 threefive sidecar video.ts
@@ -99,6 +100,7 @@ a@fu:~/threefive$ cat sidecar.txt
 72820.9484,/DBDAAAAAyiYAP/wFAUAAAABf+//hqqjQv4ApMbEmZkBAQAeAhxDVUVJAAAAAH/AAACky4ABCDEwMTAwMDAwNAAAN7GZ7w==
 72951.7791,/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU=
 ```
+## adbreak3
 * adbreak3 is a command line tool for generating SCTE-35 for sidecar files
 ```js
 $ adbreak3 -h
