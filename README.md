@@ -84,3 +84,62 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 
 * __With HLS, it is the same__, but with MPEGTS, SCTE-35 is usually inserted 4-10 seconds before the SCTE-35 splice point.
 
+
+
+# Generating sidecar files.
+* You write a sidecar file by hand or use one of these tools.
+
+* If you want to extract the SCTE-35 from an existing MPEGTS stream into a sidecar file
+```js
+threefive sidecar video.ts
+```
+* a sidecar file named 'sidecar.txt' will be created in the same directory.
+```js
+a@fu:~/threefive$ cat sidecar.txt 
+72820.9484,/DBDAAAAAyiYAP/wFAUAAAABf+//hqqjQv4ApMbEmZkBAQAeAhxDVUVJAAAAAH/AAACky4ABCDEwMTAwMDAwNAAAN7GZ7w==
+72951.7791,/DAsAAAAAyiYAP/wCgUAAAABf1+ZmQEBABECD0NVRUkAAAAAf4ABADUAAC2XQZU=
+```
+* adbreak3 is a command line tool for generating SCTE-35 for sidecar files
+```js
+$ adbreak3 -h
+usage: adbreak3 [-h] [-d DURATION] [-e EVENT_ID] [-i] [-o] [-p PTS] [-P]
+                [-s SIDECAR] [-v]
+
+options:
+  -h, --help            show this help message and exit
+  -d DURATION, --duration DURATION
+                        Set duration of ad break. [ default: 60.0 ]
+  -e EVENT_ID, --event-id EVENT_ID
+                        Set event id for ad break. [ default: 1 ]
+  -i, --cue-in-only     Only make a cue-in SCTE-35 cue [ default: False ]
+  -o, --cue-out-only    Only make a cue-out SCTE-35 cue [ default: False ]
+  -p PTS, --pts PTS     Set start pts for ad break. Not setting pts will
+                        generate a Splice Immediate CUE-OUT. [ default: 0.0 ]
+  -P, --preroll         Add SCTE data four seconds before splice point. Used
+                        with MPEGTS. [ default: False ]
+  -s SIDECAR, --sidecar SIDECAR
+                        Sidecar file of SCTE-35 (pts,cue) pairs. [ default:
+                        sidecar.txt ]
+  -v, --version         Show version
+
+```
+* use adbreak3 like this
+```js
+a@fu:~/Downloads$ adbreak3 --duration 60 --pts 1234.56789 --event-id 34
+
+Writing to sidecar file: sidecar.txt
+
+		CUE-OUT   PTS:1234.567889   Id:34   Duration: 60.0
+		CUE-IN    PTS:1294.567889   Id:35
+```
+* by default adbreak3 writes to sidecar.txt.
+* a different file can be specified with the -s switch.
+* if the file already exists, adbreak3 will append to it.
+
+```js
+
+a@fu:~/Downloads$ cat sidecar.txt
+1234.56789,/DAlAAAAAAAAAP/wFAUAAAAif+/+Bp9rxv4AUmXAACIAAAAAjjSYpQ==
+1294.56789,/DAgAAAAAAAAAP/wDwUAAAAjf0/+BvHRhgAjAAAAAE55tjQ=
+
+```
