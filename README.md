@@ -1,23 +1,21 @@
 # SCTE-35_Sidecar_Files
+<img width="1054" height="587" alt="image" src="https://github.com/user-attachments/assets/b5b0d7cb-13bb-4bb4-a66a-633b89906c61" />
 
-# SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams or HLS manifest.
+# SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams or HLS manifests.
 
-First let me clarify, SCTE-35 sidecar files are not part of the specification, but they are fully and completely compatible and meet the specification.
-SCTE-35 sidecar files are just something I have used for years, and they work will really really well. threefive, sideways, x9k3, umzz, and m3ufu all support sidecar files. 
-Right now they are partially documented across several repos, so I decided to put it all here in one place.
+__SCTE-35 sidecar files are not part of the specification, but they fully and completely meet the specification__.
+SCTE-35 sidecar files are just something I have used for years, and they work will really really well. __threefive, sideways, x9k3, umzz, and m3ufu__ all __support sidecar files__. 
+__Right now they are partially documented across several repos, so I decided to put it all here in one place.__
 
 # Why a sidecar file and not SCTE-104?
+### Have you read the SCTE-104 specification?
+__I have__, and shortly after reading the spec, I came up with SCTE-35 sidecar files.
 
-
-Have you read the SCTE-104 specification? 
-I have, and shortly after reading the spec, I came up with SCTE-35 sidecar files.
-
-So that I don't have keep typing "__SCTE-35 sidecar file__" I'm going to use __ssf__, I am that lazy.
 
 # Format
 
 
-An __ssf__ has a simple format __insert_pts__  , __cue__
+A __sidecar file__ has a simple format __insert_pts__  , __cue__
 
 Example:
 
