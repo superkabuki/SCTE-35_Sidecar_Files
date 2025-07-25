@@ -17,9 +17,10 @@ ___
 
 # Specification
 
-### `Sidecar files are made of lines.`
-### `Lines have an insert_pts, and a cue`.
+### [Sidecar files](#sidecar-files) are made of [lines](#lines).
+### Lines have an [insert_pts](#insert_pts), and a [cue](#cue).
 
+## __sidecar files__
 
 ```smalltalk
 a@fu:~/threefive$ cat ~/sidecar.txt 
@@ -31,20 +32,18 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 58400.0,/DAgAAAAAAAAAP/wDwUAAAACf0//OUgyAAACAAAAAOK4vJc=
 58300.0,/DAlAAAAAAAAAP/wFAUAAAABf+//OL7dwP4Bm/zAAAEAAAAAvdWUYg
 ```
-
-* __sidecar files__
    * ascii text files
    * Sidecar files are read on startup.
    * __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
    * To handle live updates, sidecar files are __checked at every iframe__.
    * Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
 ---
-### `Sidecar Files have lines`
+
+## lines
 
 ```js
     58100.0 , /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
 ```
-* __lines__
 
    *  format  is one  __insert_pts__  , __cue__ pair per line.
    *  __insert_pts__ and __cue__ are separated by a comma.
@@ -54,22 +53,23 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 
 ### `Lines have an insert_pts and a cue`.
 
+## __insert_pts__
+
 ```js
 95443.717678
 ```
-* __insert_pts__
-
    * __insert_pts__ is MPEGTS __pts in seconds__.
    * a float accurate to 6 places
    * range  __0 - 95443.717678__.
    * Setting to 0 inserts the cue at the __next iframe__.
 ---
 
+
+## __cue__
+
 ```js
   /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
 ```
-* __cue__
-
    * standard SCTE-35. 
    * formats
      * base64
