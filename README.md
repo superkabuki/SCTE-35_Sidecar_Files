@@ -72,7 +72,7 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 
 
 
-### Why isn't the insert_pts the same as the SCTE-35 pts_time / spice point?
+### Why isn't the insert_pts the same as the SCTE-35 pts_time / splice point?
 
 * __With HLS, it is the same__, but with MPEGTS, SCTE-35 is usually inserted 4-10 seconds before the SCTE-35 splice point.
 ---
