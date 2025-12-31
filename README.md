@@ -25,12 +25,14 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 58060.0,/DAgAAAAAAAAAP/wDwUAAAACf0//N3VGwAACAAAAAPWDDDY=
 57900.0,/DAlAAAAAAAAAP/wFAUAAAABf+//NpmMwP4Bm/zAAAEAAAAAD7tCMw==
 ```
-* __Sidecar file details__
-   * ascii text files
-   * Sidecar files are read on startup.
-   * __Order doesn't matter__, the data is sorted by insert_pts every time the sidecar file is checked.
-   * To handle live updates, sidecar files are __checked at every iframe__.
-   * Sidecar files are usually blanked after the data is read, so that we don't keep reading the same data over and over.
+---
+* __Sidecar files__
+  
+  *  Are text files.
+   * Can have comments prefixed by '#' and terminated by a new line '\n'
+   * Can be appended at any time.
+   * Are made of lines.
+
 ---
 
 ### `Sidecar files are made of Lines`.
@@ -38,44 +40,57 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 ```js
     58100.0 , /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
 ```
-* __Line details__
-   *  format  is one  __insert_pts__  , __cue__ pair per line.
-   *  __insert_pts__ and __cue__ are separated by a comma.
-   *  surrounding white space doesn't matter,
-   *  lines end on a new line character '\n'.
+---
+
+* __Lines__
+  
+    *  End with a new line '\n'
+    *  Can have comments prefixed by '#' and terminated by a new line '\n'
+    *  Can wrap if needed.
+    *  Contain 1 insert_pts and 1 cue separated by a comma.
 ---
 
 ### `Lines have an insert_pts and a cue`.
-```js
+---
+* __insert_pts__
+  * Is pts in seconds.
+  * Has a range of 0 to 95443.717677.
+  * Is the pts to insert the SCTE35 Cue.
+  * Is absolute, no adjustment is applied.
+  * If insert_pts is zero '0', the SCTE35 Cue  is inserted at the next iFrame.
+---
+* __cue__
+   * is a SCTE35 cue.
+   * can be Base64, Hex or Integer.
+---
+<BR>
 
-   insert_pts ,    cue
-      |            |
-    58100.0  , /DAlAAAAAAAAAP/wFAUAAAABf+//N6w1QP4Bm/zAAAEAAAAAASHDdA==
-```
+* __Additional Details__:
+	1) Sidecar are used for inserting SCTE35 into MPEGTS,DASH, or HLS.
 
-* __insert_pts details__
-   * __insert_pts__ is MPEGTS __pts in seconds__.
-   * a float accurate to 6 places
-   * range  __0 - 95443.717678__.
-   * Setting to 0 inserts the cue at the __next iframe__.
+	2) __Sidecar files can be appended to live__.
 
-* __cue details__
-   * standard SCTE-35. 
-   * formats
-     * base64
-     * bytes
-     * hex
-     * integer
+	3) __Sidecar files should be checked for new information at every iFrame__.
+
+	4) __When lines are read from a sidecar file, the lines should be deleted from the sidecar file.__
+
+	5) lines with an __insert_pts older than the current pts__ of the video should be __left in the sidecar file and ignored__ until they become relevant after a rollover.
+
+	6) __Sidecar files do NOT have to be in chronological order__.
+
+	7) __The cue should be inserted at the insert_pts if an iframe is present__.
+
+	8) __If an iframe is NOT present at the insert_pts__, then the cue should be inserted at the __closest iframe to the insert_pts__.
+
+	9) Setting __insert_pts to 0 indicates a "splice immediate"__ and the cue should be inserted at the __next iframe__.
+
+	10) __insert_pts should NOT contain a preroll__.
+ 
+    11) __insert_pts formula__ (Cue Comand pts_time  + Splice Info Section pts_adjustment) % 95443.717677
+
 ---
 
 # `End of Specification`
-
-
-
-### Why isn't the insert_pts the same as the SCTE-35 pts_time / splice point?
-
-* __With HLS, it is the same__, but with MPEGTS, SCTE-35 is usually inserted 4-10 seconds before the SCTE-35 splice point.
----
 
 
 # Generating sidecar files.
