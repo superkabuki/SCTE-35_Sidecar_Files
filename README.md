@@ -3,7 +3,7 @@
 # SCTE-35 Sidecar Files
 <img width="1054" height="587" alt="image" src="https://github.com/user-attachments/assets/b5b0d7cb-13bb-4bb4-a66a-633b89906c61" />
 
-# SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams or HLS manifests.
+# SCTE-35 sidecar files are used to insert SCTE-35 in MPEGTS streams, DASH,or HLS.
 
 __SCTE-35 sidecar files are not part of the specification, but they fully and completely meet the specification__.
 SCTE-35 sidecar files are just something I have used for years, and they work will really really well. __threefive, sideways, x9k3, umzz, and m3ufu__ all __support sidecar files__. 
@@ -57,21 +57,22 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 ### `Lines have an insert_pts and a cue`.
 ---
 ##  __insert_pts__
-  * Is pts in seconds.
-  * Has a range of 0 to 95443.717677.
+
+* Is pts in seconds.
+* Has a range of 0 to 95443.717677.
   * Is the pts to insert the SCTE35 Cue.
-  * Is absolute, no adjustment is applied.
-  * If insert_pts is zero '0', the SCTE35 Cue  is inserted at the next iFrame.
+* Is absolute, no adjustment is applied.
+* If insert_pts is zero '0', the SCTE35 Cue  is inserted at the next iFrame.
 ---
 ## __cue__
-   * is a SCTE35 cue.
-   * can be Base64, Hex or Integer.
+
+* is a SCTE35 cue.
+* can be Base64, Hex or Integer.
 
 
 ---
 
 ## Details
----
 
 1) Sidecar files are used for inserting SCTE35 into MPEGTS,DASH, or HLS.
 2)  __Sidecar files can be appended to live__.
@@ -83,7 +84,7 @@ a@fu:~/threefive$ cat ~/sidecar.txt
 8) __If an iframe is NOT present at the insert_pts__, then the cue should be inserted at the __closest iframe to the insert_pts__.
 9) Setting __insert_pts to 0 indicates a "splice immediate"__ and the cue should be inserted at the __next iframe__.
 10) __insert_pts should NOT contain a preroll__.
-11) __insert_pts formula__ (Cue Comand pts_time  + Splice Info Section pts_adjustment) % 95443.717677
+11) __insert_pts = __(Splice Comand pts_time  + Splice Info Section pts_adjustment) % 95443.717677__
 
 ---
 
